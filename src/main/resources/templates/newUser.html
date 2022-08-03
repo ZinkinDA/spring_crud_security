@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create_User</title>
+</head>
+<body>
+<!--/*@thymesVar id="newUser" type="com.example.crud_boot_security_proj.entity.Users"*/-->
+<form th:method="post" th:action="@{/admin/users/newUser}" th:object="${newUser}">
+    <div>
+        <label for="login">login</label>
+        <input type="text" th:field="*{login}" id="login">
+        <br>
+        <label for="password"> Password </label>
+        <input type="text" th:field="*{password}" id="password">
+        <br>
+        <label for="username"> FirstName </label>
+        <input type="text" th:field="*{firstName}" id="username">
+        <br>
+        <label for="surname"> LastName </label>
+        <input type="text" th:field="*{lastName}" id="surname">
+        <br>
+        <br>
+        <label>Roles:
+            <select size="2" multiple name="rolesUser" required="required">
+                <option selected="selected" value="2">USER</option>
+                <option value="1">ADMIN</option>
+            </select>
+        </label>
+        <input type="submit" value="Create User">
+    </div>
+</form>
+</body>
+</html>
