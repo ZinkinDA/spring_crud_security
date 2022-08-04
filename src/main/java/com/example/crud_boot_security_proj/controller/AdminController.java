@@ -39,7 +39,7 @@ public class AdminController {
         return "/user";
     }
 
-    @GetMapping("/admin/users/newUser")
+    @GetMapping("/users/newUser")
     public String createNewUser(Model model){
         model.addAttribute("newUser", new Users());
         model.addAttribute("rolesUser",roleService.getAllRoles());
@@ -57,13 +57,13 @@ public class AdminController {
     @GetMapping("/users/{login}/edit")
     public String getUpdateUser(@PathVariable("login") String login,Model model){
         model.addAttribute("updateUser",userService.findUserByUsername(login));
-        model.addAttribute("rolesUpdate",roleService.getAllRoles());
+        model.addAttribute("roles",roleService.getAllRoles());
         return "edit";
     }
 
     @PostMapping("/users/{login}")
     public String updateUser(@PathVariable("login") String login,@ModelAttribute("updateUser") Users user,
-                                @RequestParam("rolesUpdate") ArrayList<Integer> id){
+                                @RequestParam("roles") ArrayList<Integer> id){
         user.setRoles(roleService.findByIdRoles(id));
         userService.updateUserByUsername(login,user);
         return "redirect:/admin/users";
@@ -72,7 +72,7 @@ public class AdminController {
     @DeleteMapping("/users/{login}")
     public String deleteUser(@PathVariable("login") String login){
         userService.deleteUserByUsername(login);
-        return "redirect:/users";
+        return "redirect:/admin/users";
     }
 
 }
