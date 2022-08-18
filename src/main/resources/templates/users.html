@@ -1,18 +1,223 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Users</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- CSS only -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>New_user</title>
 </head>
 <body>
+<!-- Верхняя навигация dark с кнопкой выхода. -->
+<header>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <p class="navbar-brand text-white">
 
-<div th:each="user : ${users}">
-    <a th:href="@{/admin/users/{login}(login = ${user.getLogin()})}" th:text="${user.getLogin()}">USER</a>
-</div>
+                <b><!--/*@thymesVar id="principalUser" type="com.example.crud_boot_security_proj.entity.Users"*/-->
+                <span class="align-middle" th:text="${principalUser.getLogin()}"></span></b>
+                <span class="align-middle">with roles:</span>
+                <span class="align-middle" th:text="${principalUser.getRoles()}"></span>
+            </p>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn btn-dark text-secondary">Logout</button>
+            </form>
+        </div>
+    </nav>
+</header>
+<section>
+    <div class="container-fluid">
+        <!-- Левая навигация -->
+        <div class="row">
+            <div class="p-0 col-2">
+                <div class="nav flex-column nav-pills" id="nav-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link active" id="admin-tab" data-toggle="pill" href="#admin-page" role="tab" aria-controls="v-pills-home" aria-selected="true" th:text="ADMIN">Home</a>
+                    <a class="nav-link" id="user-tab" data-toggle="pill" href="#user-page" role="tab" aria-controls="v-pills-profile" aria-selected="false">USER</a>
+                </div>
+            </div>
+            <!-- Правая панель навигации -->
+            <div class="col-10">
+                <div class="tab-content" id="nav-tabContent">
+                    <!-- Админ -->
+                    <div class="tab-pane fade show active" id="admin-page" role="tabpanel" aria-labelledby="admin-tab">
+                        <h1 class="m-3 fw-bold">ADMIN panel:</h1>
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#user-table" role="tab" aria-controls="pills-home" aria-selected="true">User table</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#new-user" role="tab" aria-controls="pills-profile" aria-selected="false">New user</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="user-table" role="tabpanel" aria-labelledby="pills-home-tab">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="m-1">
+                                            <h4>All users</h4>
+                                        </div>
+                                    </div>
 
-<a th:href="@{/admin/users/newUser}">Add User</a>
+                                    <div class="card-body">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">login</th>
+                                                <th scope="col">name</th>
+                                                <th scope="col">lastname</th>
+                                                <th scope="col">role</th>
+                                                <th scope="col">edit</th>
+                                                <th scope="col">delete</th>
+                                                <th scope="col">view</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="user:${users}">
+                                                <td class="col-lg-2" th:text="${user.getLogin()}" >login</td>
+                                                <td class="col-lg-2" th:text="${user.getFirstname()}">Otto</td>
+                                                <td class="col-lg-2" th:text="${user.getLastname()}">@mdo</td>
+                                                <td class="col-lg-2" th:text="${user.getRoles()}">roles</td>
+                                                <td class="col-lg-1">
 
-</div>
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Edit</button>
+
+                                                    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-lg">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="editModalLabel">Edit user</h5>
+                                                                </div>
+                                                                <br>
+                                                                <form th:action="@{/admin/users/{login}(login=${user.getLogin()})}"
+                                                                      th:object="${user}" th:method="POST">
+                                                                    <div class="modal-body col-md text-center">
+                                                                        <br>
+                                                                        <label for="name"><b>FirstName</b></label>
+                                                                        <input th:name="firstname" th:type="text"
+                                                                               class="form-control" id="name"
+                                                                               th:value="${user.firstname}"/>
+                                                                        <br>
+                                                                        <label for="surname"><b>LastName</b></label>
+                                                                        <input th:name="lastname" th:type="text"
+                                                                               class="form-control" id="surname"
+                                                                               th:value="${user.lastname}"/>
+                                                                        <br>
+                                                                        <label for="password"><b>Password</b></label>
+                                                                        <input th:name="password" type="text"
+                                                                               class="form-control" id="password"
+                                                                               th:value="${user.password}"/>
+                                                                        <br>
+                                                                        <label for="roles"><b>Role</b></label>
+                                                                        <select size="2" multiple name="roles" required="required" id="roles">
+                                                                            <option value="1">USER</option>
+                                                                            <option value="2">ADMIN</option>
+                                                                        </select>
+                                                                        <br><br>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="submit" class="btn btn-primary">Edit</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="col-lg-1">
+                                                    <form th:method="delete" th:action="@{/admin/users/{login}(login = ${user.getLogin()})}">
+                                                        <input type = "submit" value="Delete">
+                                                    </form>
+                                                </td>
+                                                <td class="col-lg-1">
+                                                    <a th:href="@{/admin/users/{login}(login = ${user.getLogin()})}" type="button" class="btn btn-success">View</a>
+                                                </td>
+
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="new-user" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                <!--/*@thymesVar id="newUser" type="com.example.crud_boot_security_proj.entity.Users"*/-->
+                                <form th:action="@{/admin/users/newUsers}"
+                                      th:object="${newUser}" th:method="POST">
+                                    <br>
+                                    <label for="NewName"><b>FirstName</b></label>
+                                    <input th:name="firstname" th:type="text"
+                                           class="form-control" id="NewName"
+                                           th:value="${newUser.firstname}"/>
+                                    <br>
+                                    <label for="NewSurname"><b>LastName</b></label>
+                                    <input th:name="lastname" th:type="text"
+                                           class="form-control" id="NewSurname"
+                                           th:value="${newUser.lastname}"/>
+                                    <br>
+                                    <label for="NewLogin"><b>Login</b></label>
+                                    <input th:name="login" th:type="text"
+                                           class="form-control" id="NewLogin"
+                                           th:value="${newUser.login}"/>
+                                    <br>
+                                    <label for="NewPassword"><b>Password</b></label>
+                                    <input th:name="password" type="text"
+                                           class="form-control" id="NewPassword"
+                                           th:value="${newUser.password}"/>
+                                    <br>
+                                    <label for="NewRoles"><b>Role</b></label>
+                                    <!--/*@thymesVar id="roles" type="com.example.crud_boot_security_proj.entity.Role"*/-->
+                                    <select size="2" multiple name="roles" required="required" id="NewRoles">
+                                        <option value="1">USER</option>
+                                        <option value="2">ADMIN</option>
+                                    </select>
+                                    <br><br>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Пользователь -->
+                    <div class="tab-pane fade" id="user-page" role="tabpanel" aria-labelledby="user-tab">
+                        <h1 class="m-3 fw-bold">Profile information-page:</h1>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="m-1">
+                                    <h4>Profile user</h4>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">login</th>
+                                        <th scope="col">name</th>
+                                        <th scope="col">lastname</th>
+                                        <th scope="col">role</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <!--/*@thymesVar id="principalUser" type="com.example.crud_boot_security_proj.entity.Users"*/-->
+                                    <tr th:object="${principalUser}">
+                                        <td class="col-lg-2" th:text="${principalUser.getLogin()}" >login</td>
+                                        <td class="col-lg-2" th:text="${principalUser.getFirstname()}">Otto</td>
+                                        <td class="col-lg-2" th:text="${principalUser.getLastname()}">@mdo</td>
+                                        <td class="col-lg-2" th:text="${principalUser.getRoles()}">roles</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script></body>
+
 </body>
 </html>

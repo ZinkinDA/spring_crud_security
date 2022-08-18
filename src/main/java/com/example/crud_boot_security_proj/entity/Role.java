@@ -4,6 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "role")
@@ -47,9 +48,17 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String toString() {
-        return "Role{" +
-                ", role='" + role + '\'' +
-                '}';
+        String role;
+        if(this.role.contains("ROLE_ADMIN")){
+            if(this.role.contains("ROLE_USER")) {
+                role = "ADMIN, USER";
+            } else {
+                role = "ADMIN";
+            }
+        } else {
+            role = "USER";
+        }
+        return role;
     }
 
     @Override

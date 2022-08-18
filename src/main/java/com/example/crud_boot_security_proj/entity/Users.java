@@ -1,16 +1,11 @@
 package com.example.crud_boot_security_proj.entity;
 
 
-import lombok.Data;
-import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -23,7 +18,7 @@ public class Users implements UserDetails {
     public Users(String login,String password, String firstName,String lastName){
         this.login = login;
         this.password = password;
-        this.firstName = firstName;
+        this.firstname = firstName;
         this.lastName = lastName;
     }
 
@@ -34,7 +29,7 @@ public class Users implements UserDetails {
     @Column(name = "password")
     private String password;
     @Column(name = "firstname")
-    private String firstName;
+    private String firstname;
     @Column(name = "lastname")
     private String lastName;
 
@@ -91,19 +86,19 @@ public class Users implements UserDetails {
         this.password = password;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirstname(String firstName) {
+        this.firstname = firstName;
     }
 
-    public String getLastName() {
+    public String getLastname() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastname(String lastName) {
         this.lastName = lastName;
     }
 
@@ -120,7 +115,7 @@ public class Users implements UserDetails {
         return "Users{" +
                 "login='" + login + '\'' +
                 ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
+                ", firstName='" + firstname + '\'' +
                 ", lastName='" + lastName + '\'' +
                 '}';
     }

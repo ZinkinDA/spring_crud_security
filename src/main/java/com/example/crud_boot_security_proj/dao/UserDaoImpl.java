@@ -33,13 +33,8 @@ public class UserDaoImpl implements UserDao{
     @Override
     public void updateUserByUsername(String login,Users user){
 
-        entityManager.createQuery("update Users set password = :password,lastName = :lastname , firstName = :firstname " +
-                                    " where login = :login")
-                .setParameter("password", user.getPassword())
-                .setParameter("lastname",user.getLastName())
-                .setParameter("firstname",user.getFirstName())
-                .setParameter("login",user.getLogin())
-                .executeUpdate();
+        entityManager.merge(user);
+
     }
     @Override
     public void deleteUserByUsername(String login){
