@@ -6,11 +6,13 @@ import com.example.crud_boot_security_proj.entity.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Transactional
 @Service
 public class UserServiceImpl implements UserService{
     private final UserDao userDao;
