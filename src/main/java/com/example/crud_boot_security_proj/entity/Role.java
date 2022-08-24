@@ -10,16 +10,16 @@ import java.util.Set;
 @Table(name = "role")
 public class Role implements GrantedAuthority {
 
-    public Role(){
+    public Role() {
 
     }
 
-    public Role(int id,String role){
+    public Role(int id, String role) {
         this.id = id;
         this.role = role;
     }
 
-    public Role(String role){
+    public Role(String role) {
         this.role = role;
     }
 
@@ -29,6 +29,18 @@ public class Role implements GrantedAuthority {
     private int id;
     @Column(name = "role")
     private String role;
+
+
+    @ManyToOne
+    private Users users;
+
+    public void setUsers(Users users) {
+        this.users = users;
+    }
+
+    public Users getUsers() {
+        return users;
+    }
 
     public int getId() {
         return id;
@@ -49,8 +61,8 @@ public class Role implements GrantedAuthority {
     @Override
     public String toString() {
         String role;
-        if(this.role.contains("ROLE_ADMIN")){
-            if(this.role.contains("ROLE_USER")) {
+        if (this.role.contains("ROLE_ADMIN")) {
+            if (this.role.contains("ROLE_USER")) {
                 role = "ADMIN, USER";
             } else {
                 role = "ADMIN";

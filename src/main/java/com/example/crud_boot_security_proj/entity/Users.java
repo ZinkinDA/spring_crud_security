@@ -12,10 +12,11 @@ import java.util.Set;
 @Table(name = "users")
 public class Users implements UserDetails {
 
-    public Users(){
+    public Users() {
 
     }
-    public Users(String login,String password, String firstName,String lastName){
+
+    public Users(String login, String password, String firstName, String lastName) {
         this.login = login;
         this.password = password;
         this.firstname = firstName;

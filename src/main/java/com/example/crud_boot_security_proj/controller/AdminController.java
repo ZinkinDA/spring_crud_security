@@ -22,8 +22,9 @@ public class AdminController {
 
     private final UserService userService;
     private RoleService roleService;
+
     @Autowired
-    public AdminController(UserService userService,RoleService roleService) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
 
@@ -31,56 +32,56 @@ public class AdminController {
 
 
     @GetMapping("/users")
-    public String getUsers(Model model,Principal principal){
-        model.addAttribute("newUser",new Users());
-        model.addAttribute("users",userService.getUsersAll());
-        model.addAttribute("roles",roleService.getAllRoles());
-        model.addAttribute("principalUser",userService.findUserByUsername(principal.getName()));
+    public String getUsers(Model model, Principal principal) {
+        model.addAttribute("newUser", new Users());
+        model.addAttribute("users", userService.getUsersAll());
+        model.addAttribute("roles", roleService.getAllRoles());
+        model.addAttribute("principalUser", userService.findUserByUsername(principal.getName()));
         return "users";
     }
 
     @GetMapping("/users/{login}")
-    public String getUserByLogin(@PathVariable("login") String login, Model model,Principal principal){
-        model.addAttribute("user",userService.findUserByUsername(login));
-        model.addAttribute("principal",principal);
+    public String getUserByLogin(@PathVariable("login") String login, Model model, Principal principal) {
+        model.addAttribute("user", userService.findUserByUsername(login));
+        model.addAttribute("principal", principal);
         return "/user";
     }
 
     @GetMapping("/users/newUser")
-    public String createNewUser(Model model,Principal principal){
+    public String createNewUser(Model model, Principal principal) {
         model.addAttribute("newUser", new Users());
-        model.addAttribute("rolesUser",roleService.getAllRoles());
-        model.addAttribute("principal",principal);
+        model.addAttribute("rolesUser", roleService.getAllRoles());
+        model.addAttribute("principal", principal);
         return "newUser";
     }
 
     @PostMapping("/users/newUser")
     public String saveNewUser(@ModelAttribute("newUser") Users user, @RequestParam("rolesUser")
-                              ArrayList<Integer> id){
+    ArrayList<Integer> id) {
         user.setRoles(roleService.findByIdRoles(id));
         userService.saveUser(user);
         return "redirect:/admin/users";
     }
 
     @GetMapping("/users/{login}/edit")
-    public String getUpdateUser(@PathVariable("login") String login,Model model,Principal principal){
-        model.addAttribute("userLogin",userService.findUserByUsername(login));
-        model.addAttribute("roles",roleService.getAllRoles());
-        model.addAttribute("principal",principal);
+    public String getUpdateUser(@PathVariable("login") String login, Model model, Principal principal) {
+        model.addAttribute("userLogin", userService.findUserByUsername(login));
+        model.addAttribute("roles", roleService.getAllRoles());
+        model.addAttribute("principal", principal);
         return "edit";
     }
 
     @PostMapping("/users/{login}")
-    public String updateUser(@PathVariable("login") String login,@ModelAttribute("userLogin") Users user,@RequestParam("roles")
-    ArrayList<Integer> id){
+    public String updateUser(@PathVariable("login") String login, @ModelAttribute("userLogin") Users user, @RequestParam("roles")
+    ArrayList<Integer> id) {
         user.setRoles(roleService.findByIdRoles(id));
-        userService.updateUserByUsername(login,user);
+        userService.updateUserByUsername(login, user);
         return "redirect:/admin/users";
     }
 
 
     @DeleteMapping("/users/{login}")
-    public String deleteUser(@PathVariable("login") String login){
+    public String deleteUser(@PathVariable("login") String login) {
         userService.deleteUserByUsername(login);
         return "redirect:/admin/users";
     }

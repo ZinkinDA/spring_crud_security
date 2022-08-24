@@ -1,29 +1,28 @@
 package com.example.crud_boot_security_proj.service;
 
+import com.example.crud_boot_security_proj.configs.WebSecurityConfig;
 import com.example.crud_boot_security_proj.dao.UserDao;
-import com.example.crud_boot_security_proj.entity.Role;
 import com.example.crud_boot_security_proj.entity.Users;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-@Transactional
 @Service
 public class UserServiceImpl implements UserService{
     private final UserDao userDao;
-
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao) {
+    public UserServiceImpl(UserDao userDao, WebSecurityConfig webSecurityConfig) {
         this.userDao = userDao;
+        this.passwordEncoder = webSecurityConfig.passwordEncoder();
     }
 
     @Override
+    @Transactional
     public List<Users> getUsersAll() {
         return userDao.getUsersAll();
     }
@@ -33,15 +32,23 @@ public class UserServiceImpl implements UserService{
         return userDao.findUserByUsername(login);
     }
 
-    public void updateUserByUsername(String login,Users user){
-        userDao.updateUserByUsername(login,user);
+    @Transactional
+    @Override
+    public void updateUserByUsername(String login, Users user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userDao.updateUserByUsername(login, user);
+
     }
 
-    public void deleteUserByUsername(String login){
+    @Transactional
+    @Override
+    public void deleteUserByUsername(String login) {
         userDao.deleteUserByUsername(login);
     }
 
-    public void saveUser(Users user){
+    @Override
+    public void saveUser(Users user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.saveUser(user);
     }
 }

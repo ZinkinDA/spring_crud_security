@@ -1,4 +1,4 @@
-package com.example.crud_boot_security_proj.configs;
+package com.example.crud_boot_security_proj.service;
 
 import com.example.crud_boot_security_proj.dao.UserDao;
 import com.example.crud_boot_security_proj.entity.Users;
@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Users user = userDao.findUserByUsername(username);
-        if(user == null) {
+        if (user == null) {
             throw new UsernameNotFoundException("Exception : user not found.Check username");
         }
         return user;

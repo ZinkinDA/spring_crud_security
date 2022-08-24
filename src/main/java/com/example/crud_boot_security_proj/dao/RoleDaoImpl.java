@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 @Repository
-public class RoleDaoImpl implements RoleDao{
+public class RoleDaoImpl implements RoleDao {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -30,13 +30,13 @@ public class RoleDaoImpl implements RoleDao{
 
     @Override
     public Role findById(long id) {
-        return entityManager.find(Role.class,id);
+        return entityManager.find(Role.class, id);
     }
 
     @Override
     public Set<Role> findByIdRoles(List<Integer> id) {
         TypedQuery<Role> q = entityManager.createQuery("select r from Role r where r.id in :id", Role.class);
-        q.setParameter("id",id);
+        q.setParameter("id", id);
         return new HashSet<>(q.getResultList());
     }
 }

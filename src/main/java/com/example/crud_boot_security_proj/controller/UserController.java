@@ -25,17 +25,17 @@ public class UserController {
     }
 
     @GetMapping("/users/userView")
-    public String getPageUserForm(Model model, Principal principal){
-        model.addAttribute("thisUser",userService.findUserByUsername(principal.getName()));
+    public String getPageUserForm(Model model, Principal principal) {
+        model.addAttribute("thisUser", userService.findUserByUsername(principal.getName()));
         return "/userView";
     }
 
     @GetMapping("/index")
-    public String getUserById(Model model,Principal principal){
-        model.addAttribute("newUser",new Users());
-        model.addAttribute("users",userService.getUsersAll());
-        model.addAttribute("roles",roleService.getAllRoles());
-        model.addAttribute("principalUser",userService.findUserByUsername(principal.getName()));
+    public String getUserById(Model model, Principal principal) {
+        model.addAttribute("newUser", new Users());
+        model.addAttribute("users", userService.getUsersAll());
+        model.addAttribute("roles", roleService.getAllRoles());
+        model.addAttribute("principalUser", userService.findUserByUsername(principal.getName()));
         return "/index";
     }
 }
