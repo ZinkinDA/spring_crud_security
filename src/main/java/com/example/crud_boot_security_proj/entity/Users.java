@@ -1,6 +1,7 @@
 package com.example.crud_boot_security_proj.entity;
 
 
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -38,6 +39,7 @@ public class Users implements UserDetails {
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "users_login"),
             inverseJoinColumns = @JoinColumn(name = "roles_id"))
+    @ToString.Exclude
     private Set<Role> roles;
 
 
